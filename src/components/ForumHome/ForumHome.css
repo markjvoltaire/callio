@@ -63,6 +63,12 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
+.home-sidebar__divider {
+  height: 1px;
+  margin: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .home-feed {
   display: flex;
   flex: 1;
@@ -208,8 +214,13 @@
 }
 
 .home-post__time,
+.home-post__timestamp,
 .home-post__dot {
   color: #536471;
+}
+
+.home-post__timestamp {
+  font-size: 0.85rem;
 }
 
 .home-post__topic {

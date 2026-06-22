@@ -139,6 +139,32 @@
 
 .login-panel__header {
   margin-bottom: 1.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.login-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+}
+
+.login-back-button:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.login-back-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .login-panel__title {
@@ -356,6 +382,21 @@
 .login-link-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.login-page--single {
+  grid-template-columns: 1fr;
+}
+
+.login-panel--centered {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.login-panel--centered .login-panel__inner {
+  width: min(100%, 420px);
 }
 
 .login-panel__footer {

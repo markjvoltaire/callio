@@ -1,21 +1,23 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   Airplane,
+  ClockCounterClockwise,
   CoatHanger,
-  House,
   SignOut,
   SoccerBall,
   Sun,
   User,
 } from '@phosphor-icons/react';
-import { getPostsForTopic } from '../../data/posts';
+import { usePosts } from '../../hooks/usePosts';
 import { forumTopics } from '../../data/topics';
-import { getUserById } from '../../data/users';
+import ComposePost from './ComposePost';
 import './ForumHome.css';
+import './ComposePost.css';
 
 interface ForumHomeProps {
+  userId: string;
   username?: string;
   onSignOut?: () => void;
 }
@@ -50,17 +52,19 @@ function scrollFeedTo(container: HTMLDivElement | null, index: number, smooth = 
   container.scrollLeft = left;
 }
 
-export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
+export default function ForumHome({ userId, username, onSignOut }: ForumHomeProps) {
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
   const [activePostIndex, setActivePostIndex] = useState(0);
+  const [isComposing, setIsComposing] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
-  const posts = useMemo(() => getPostsForTopic(activeTopicId), [activeTopicId]);
+  const { posts, isLoading, error, refetch } = usePosts(activeTopicId);
 
-  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Home';
+  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Most recent';
 
   useEffect(() => {
-    setActivePostIndex(0);
-    scrollFeedTo(feedRef.current, 0);
+    const lastIndex = Math.max(0, posts.length - 1);
+    setActivePostIndex(lastIndex);
+    scrollFeedTo(feedRef.current, lastIndex);
   }, [activeTopicId, posts.length]);
 
   const goToPost = (index: number) => {
@@ -92,9 +96,11 @@ export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
             }`}
             onClick={() => setActiveTopicId(null)}
           >
-            <House size={24} weight="regular" />
-            <span>Home</span>
+            <ClockCounterClockwise size={24} weight="regular" />
+            <span>Most recent</span>
           </button>
+
+          <div className="home-sidebar__divider" aria-hidden="true" />
 
           {forumTopics.map((topic) => (
             <button
@@ -134,19 +140,37 @@ export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
             <h1>{feedTitle}</h1>
             {username ? <p className="home-feed__user">@{username}</p> : null}
           </div>
-          {posts.length > 0 ? (
-            <p className="home-feed__count">
-              {activePostIndex + 1} of {posts.length}
-            </p>
-          ) : null}
+          <div className="home-feed__header-actions">
+            {posts.length > 0 ? (
+              <p className="home-feed__count">
+                {activePostIndex + 1} of {posts.length}
+              </p>
+            ) : null}
+            <button
+              type="button"
+              className="home-feed__post-button"
+              onClick={() => setIsComposing((current) => !current)}
+            >
+              Post
+            </button>
+          </div>
         </header>
+
+        {isComposing ? (
+          <ComposePost
+            userId={userId}
+            activeTopicId={activeTopicId}
+            onPosted={refetch}
+            onClose={() => setIsComposing(false)}
+          />
+        ) : null}
 
         <div className="home-feed__stage">
           <button
             type="button"
             className="home-feed__nav home-feed__nav--prev"
             onClick={() => goToPost(activePostIndex - 1)}
-            disabled={activePostIndex === 0 || posts.length === 0}
+            disabled={activePostIndex === 0 || posts.length === 0 || isLoading}
             aria-label="Previous post"
           >
             <ArrowLeft size={20} weight="bold" />
@@ -158,21 +182,32 @@ export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
             aria-label="User posts"
             onScroll={handleScroll}
           >
-            {posts.length > 0 ? (
-              posts.map((post) => {
-                const user = getUserById(post.userId);
-
-                return (
+            {isLoading ? (
+              <div className="home-feed__empty">
+                <p>Loading posts...</p>
+              </div>
+            ) : error ? (
+              <div className="home-feed__empty">
+                <p>{error}</p>
+              </div>
+            ) : posts.length > 0 ? (
+              posts.map((post) => (
                 <article key={post.id} className="home-post">
                   <div className="home-post__card">
                     <div className="home-post__top">
                       <div className="home-post__avatar" aria-hidden="true">
-                        {getInitials(user?.username ?? 'user')}
+                        {getInitials(post.username)}
                       </div>
                       <div className="home-post__meta">
-                        <span className="home-post__username">@{user?.username ?? 'unknown'}</span>
+                        <span className="home-post__username">@{post.username}</span>
                         <span className="home-post__dot">·</span>
-                        <span className="home-post__time">{post.timestamp}</span>
+                        <time className="home-post__time" dateTime={post.createdAt}>
+                          {post.timestamp}
+                        </time>
+                        <span className="home-post__dot">·</span>
+                        <time className="home-post__timestamp" dateTime={post.createdAt}>
+                          {post.createdAtLabel}
+                        </time>
                       </div>
                       <span className="home-post__topic">{getTopicLabel(post.topicId)}</span>
                     </div>
@@ -180,11 +215,14 @@ export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
                     <p className="home-post__content">{post.content}</p>
                   </div>
                 </article>
-                );
-              })
+              ))
             ) : (
               <div className="home-feed__empty">
-                <p>No posts in this topic yet.</p>
+                <p>
+                  {activeTopicId
+                    ? 'No posts in this topic yet.'
+                    : 'No posts yet. Be the first to share something.'}
+                </p>
               </div>
             )}
           </section>
@@ -193,7 +231,9 @@ export default function ForumHome({ username, onSignOut }: ForumHomeProps) {
             type="button"
             className="home-feed__nav home-feed__nav--next"
             onClick={() => goToPost(activePostIndex + 1)}
-            disabled={activePostIndex >= posts.length - 1 || posts.length === 0}
+            disabled={
+              activePostIndex >= posts.length - 1 || posts.length === 0 || isLoading
+            }
             aria-label="Next post"
           >
             <ArrowRight size={20} weight="bold" />

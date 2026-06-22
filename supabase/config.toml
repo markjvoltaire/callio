@@ -1,0 +1,21 @@
+# Supabase local development and Edge Function configuration.
+# Run `supabase init` / `supabase link` to extend this file for full local stack setup.
+#
+# Edge Functions read these env vars automatically (local + deployed):
+#   SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY, SUPABASE_JWKS_URL
+#
+# withSupabase auth modes:
+#   "user"        — valid user JWT (Authorization header). Keep verify_jwt = true.
+#   "publishable" — publishable key on apikey header. Set verify_jwt = false.
+#   "secret"      — secret key on apikey header. Set verify_jwt = false.
+#   "none"        — no auth. Set verify_jwt = false.
+
+project_id = "callio"
+
+# User-authenticated API — platform JWT check stays enabled (default).
+[functions.posts]
+verify_jwt = true
+
+# Public health check — no JWT required.
+[functions.health]
+verify_jwt = false

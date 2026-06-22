@@ -1,0 +1,145 @@
+.compose-post {
+  border-bottom: 1px solid #eff3f4;
+  background: #ffffff;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.compose-post__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.compose-post__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.compose-post__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #536471;
+  cursor: pointer;
+}
+
+.compose-post__close:hover:not(:disabled) {
+  background: #f7f9f9;
+}
+
+.compose-post__form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.compose-post__error {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 0.9rem;
+}
+
+.compose-post__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.compose-post__label {
+  color: #536471;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.compose-post__field select,
+.compose-post__field textarea {
+  width: 100%;
+  border: 1px solid #cfd9de;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f1419;
+  font: inherit;
+  padding: 0.75rem 0.85rem;
+}
+
+.compose-post__field textarea {
+  resize: vertical;
+  min-height: 6.5rem;
+  line-height: 1.5;
+}
+
+.compose-post__field select:focus,
+.compose-post__field textarea:focus {
+  outline: 2px solid rgba(15, 20, 25, 0.12);
+  outline-offset: 1px;
+}
+
+.compose-post__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.compose-post__count {
+  color: #536471;
+  font-size: 0.82rem;
+}
+
+.compose-post__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0f1419;
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.65rem 1.1rem;
+  cursor: pointer;
+}
+
+.compose-post__submit:hover:not(:disabled) {
+  background: #272c30;
+}
+
+.compose-post__submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.home-feed__post-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: #0f1419;
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.home-feed__post-button:hover {
+  background: #272c30;
+}
+
+.home-feed__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
