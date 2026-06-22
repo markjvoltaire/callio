@@ -62,9 +62,10 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
   const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Most recent';
 
   useEffect(() => {
-    const lastIndex = Math.max(0, posts.length - 1);
-    setActivePostIndex(lastIndex);
-    scrollFeedTo(feedRef.current, lastIndex);
+    const initialIndex =
+      activeTopicId === null ? 0 : Math.max(0, posts.length - 1);
+    setActivePostIndex(initialIndex);
+    scrollFeedTo(feedRef.current, initialIndex);
   }, [activeTopicId, posts.length]);
 
   const goToPost = (index: number) => {

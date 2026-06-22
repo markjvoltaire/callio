@@ -65,25 +65,29 @@ export function formatAbsoluteTime(isoDate: string): string {
   });
 }
 
-function sortPostsChronologically(posts: ForumPostView[]): ForumPostView[] {
+function sortPosts(posts: ForumPostView[], newestFirst: boolean): ForumPostView[] {
   return [...posts].sort((left, right) => {
     const timeDiff =
       new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
 
     if (timeDiff !== 0) {
-      return timeDiff;
+      return newestFirst ? -timeDiff : timeDiff;
     }
 
-    return left.id.localeCompare(right.id);
+    return newestFirst
+      ? right.id.localeCompare(left.id)
+      : left.id.localeCompare(right.id);
   });
 }
 
 export async function fetchPosts(topicId: string | null): Promise<ForumPostView[]> {
+  const newestFirst = topicId === null;
+
   let query = supabase
     .from('posts')
     .select('id, topic_id, user_id, content, created_at')
-    .order('created_at', { ascending: true })
-    .order('id', { ascending: true });
+    .order('created_at', { ascending: !newestFirst })
+    .order('id', { ascending: !newestFirst });
 
   if (topicId) {
     query = query.eq('topic_id', topicId);
@@ -116,7 +120,7 @@ export async function fetchPosts(topicId: string | null): Promise<ForumPostView[
     ((users ?? []) as DbUser[]).map((user) => [user.id, user.username])
   );
 
-  return sortPostsChronologically(
+  return sortPosts(
     rows.map((post) => ({
       id: post.id,
       topicId: post.topic_id,
@@ -126,7 +130,8 @@ export async function fetchPosts(topicId: string | null): Promise<ForumPostView[
       timestamp: formatRelativeTime(post.created_at),
       createdAtLabel: formatAbsoluteTime(post.created_at),
       username: usernameById.get(post.user_id) ?? 'unknown',
-    }))
+    })),
+    newestFirst
   );
 }
 
