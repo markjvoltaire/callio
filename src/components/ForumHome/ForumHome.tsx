@@ -38,6 +38,17 @@ function getInitials(username: string): string {
   return username.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2).toUpperCase();
 }
 
+function getPostSizeTier(content: string): 'short' | 'medium' | 'long' {
+  const length = content.trim().length;
+  if (length <= 80) {
+    return 'short';
+  }
+  if (length <= 180) {
+    return 'medium';
+  }
+  return 'long';
+}
+
 function scrollFeedTo(container: HTMLDivElement | null, index: number, smooth = false) {
   if (!container) {
     return;
@@ -193,9 +204,12 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
                 <p>{error}</p>
               </div>
             ) : posts.length > 0 ? (
-              posts.map((post) => (
+              posts.map((post) => {
+                const sizeTier = getPostSizeTier(post.content);
+
+                return (
                 <article key={post.id} className="home-post">
-                  <div className="home-post__card">
+                  <div className={`home-post__card home-post__card--${sizeTier}`}>
                     <div className="home-post__top">
                       <div className="home-post__avatar" aria-hidden="true">
                         {getInitials(post.username)}
@@ -214,10 +228,15 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
                       <span className="home-post__topic">{getTopicLabel(post.topicId)}</span>
                     </div>
 
-                    <p className="home-post__content">{post.content}</p>
+                    <div className="home-post__body">
+                      <p className={`home-post__content home-post__content--${sizeTier}`}>
+                        {post.content}
+                      </p>
+                    </div>
                   </div>
                 </article>
-              ))
+                );
+              })
             ) : (
               <div className="home-feed__empty">
                 <p>
