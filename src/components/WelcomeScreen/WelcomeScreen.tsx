@@ -1,16 +1,25 @@
-import React from 'react';
-import './WelcomeScreen.css';
+import React from "react";
+import "./WelcomeScreen.css";
 
 interface WelcomeScreenProps {
   onSignIn: () => void;
   onSignUp: () => void;
 }
 
-export default function WelcomeScreen({ onSignIn, onSignUp }: WelcomeScreenProps) {
+export default function WelcomeScreen({
+  onSignIn,
+  onSignUp,
+}: WelcomeScreenProps) {
   return (
     <div className="welcome-page">
-      <div className="welcome-page__glow welcome-page__glow--one" aria-hidden="true" />
-      <div className="welcome-page__glow welcome-page__glow--two" aria-hidden="true" />
+      <div
+        className="welcome-page__glow welcome-page__glow--one"
+        aria-hidden="true"
+      />
+      <div
+        className="welcome-page__glow welcome-page__glow--two"
+        aria-hidden="true"
+      />
 
       <main className="welcome-page__content">
         <p className="welcome-page__eyebrow">Callio</p>
@@ -23,7 +32,11 @@ export default function WelcomeScreen({ onSignIn, onSignUp }: WelcomeScreenProps
         </p>
 
         <div className="welcome-page__actions">
-          <button type="button" className="welcome-page__button" onClick={onSignIn}>
+          <button
+            type="button"
+            className="welcome-page__button"
+            onClick={onSignIn}
+          >
             Sign in
           </button>
           <button

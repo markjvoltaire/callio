@@ -13,6 +13,7 @@ import {
 import { usePosts } from '../../hooks/usePosts';
 import { forumTopics } from '../../data/topics';
 import ComposePost from './ComposePost';
+import HeaderClouds from './HeaderClouds';
 import './ForumHome.css';
 import './ComposePost.css';
 
@@ -59,7 +60,7 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
   const feedRef = useRef<HTMLDivElement>(null);
   const { posts, isLoading, error, refetch } = usePosts(activeTopicId);
 
-  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Most recent';
+  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Callio';
 
   useEffect(() => {
     const initialIndex =
@@ -137,9 +138,9 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
 
       <main className="home-feed">
         <header className="home-feed__header">
+          <HeaderClouds />
           <div>
             <h1>{feedTitle}</h1>
-            {username ? <p className="home-feed__user">@{username}</p> : null}
           </div>
           <div className="home-feed__header-actions">
             {posts.length > 0 ? (
