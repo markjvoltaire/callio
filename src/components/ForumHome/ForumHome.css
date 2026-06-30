@@ -110,6 +110,23 @@
   z-index: 1;
 }
 
+.home-feed__title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.home-feed__title-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  flex-shrink: 0;
+  background: #ffe6d6;
+  box-shadow: 0 1px 6px rgba(232, 168, 138, 0.45);
+}
+
 .home-feed__header h1 {
   margin: 0;
   font-size: 1.25rem;

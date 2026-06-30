@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,13 +9,14 @@ import {
   SoccerBall,
   Sun,
   User,
-} from '@phosphor-icons/react';
-import { usePosts } from '../../hooks/usePosts';
-import { forumTopics } from '../../data/topics';
-import ComposePost from './ComposePost';
-import HeaderClouds from './HeaderClouds';
-import './ForumHome.css';
-import './ComposePost.css';
+} from "@phosphor-icons/react";
+import { usePosts } from "../../hooks/usePosts";
+import { forumTopics } from "../../data/topics";
+import { isRelativeTimestamp } from "../../lib/posts";
+import ComposePost from "./ComposePost";
+import HeaderClouds from "./HeaderClouds";
+import "./ForumHome.css";
+import "./ComposePost.css";
 
 interface ForumHomeProps {
   userId: string;
@@ -24,54 +25,65 @@ interface ForumHomeProps {
 }
 
 const topicIcons: Record<string, React.ReactNode> = {
-  'world-cup': <SoccerBall size={24} weight="regular" />,
-  'life-in-miami': <Sun size={24} weight="regular" />,
+  "world-cup": <SoccerBall size={24} weight="regular" />,
+  "life-in-miami": <Sun size={24} weight="regular" />,
   travel: <Airplane size={24} weight="regular" />,
   fashion: <CoatHanger size={24} weight="regular" />,
 };
 
 function getTopicLabel(topicId: string): string {
-  return forumTopics.find((topic) => topic.id === topicId)?.title ?? 'Topic';
+  return forumTopics.find((topic) => topic.id === topicId)?.title ?? "Topic";
 }
 
 function getInitials(username: string): string {
-  return username.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2).toUpperCase();
+  return username
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .slice(0, 2)
+    .toUpperCase();
 }
 
-function getPostSizeTier(content: string): 'short' | 'medium' | 'long' {
+function getPostSizeTier(content: string): "short" | "medium" | "long" {
   const length = content.trim().length;
   if (length <= 80) {
-    return 'short';
+    return "short";
   }
   if (length <= 180) {
-    return 'medium';
+    return "medium";
   }
-  return 'long';
+  return "long";
 }
 
-function scrollFeedTo(container: HTMLDivElement | null, index: number, smooth = false) {
+function scrollFeedTo(
+  container: HTMLDivElement | null,
+  index: number,
+  smooth = false,
+) {
   if (!container) {
     return;
   }
 
   const left = index * container.clientWidth;
 
-  if (typeof container.scrollTo === 'function') {
-    container.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
+  if (typeof container.scrollTo === "function") {
+    container.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
     return;
   }
 
   container.scrollLeft = left;
 }
 
-export default function ForumHome({ userId, username, onSignOut }: ForumHomeProps) {
+export default function ForumHome({
+  userId,
+  username,
+  onSignOut,
+}: ForumHomeProps) {
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
   const [activePostIndex, setActivePostIndex] = useState(0);
   const [isComposing, setIsComposing] = useState(false);
   const feedRef = useRef<HTMLDivElement>(null);
   const { posts, isLoading, error, refetch } = usePosts(activeTopicId);
 
-  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : 'Callio';
+  const feedTitle = activeTopicId ? getTopicLabel(activeTopicId) : "Callio";
 
   useEffect(() => {
     const initialIndex =
@@ -105,7 +117,7 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
           <button
             type="button"
             className={`home-sidebar__item ${
-              activeTopicId === null ? 'home-sidebar__item--active' : ''
+              activeTopicId === null ? "home-sidebar__item--active" : ""
             }`}
             onClick={() => setActiveTopicId(null)}
           >
@@ -120,7 +132,7 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
               key={topic.id}
               type="button"
               className={`home-sidebar__item ${
-                activeTopicId === topic.id ? 'home-sidebar__item--active' : ''
+                activeTopicId === topic.id ? "home-sidebar__item--active" : ""
               }`}
               onClick={() => setActiveTopicId(topic.id)}
             >
@@ -129,7 +141,10 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
             </button>
           ))}
 
-          <button type="button" className="home-sidebar__item home-sidebar__item--muted">
+          <button
+            type="button"
+            className="home-sidebar__item home-sidebar__item--muted"
+          >
             <User size={24} weight="regular" />
             <span>Profile</span>
           </button>
@@ -150,7 +165,13 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
       <main className="home-feed">
         <header className="home-feed__header">
           <HeaderClouds />
-          <div>
+          <div className="home-feed__title">
+            <img
+              className="home-feed__title-icon"
+              src={`${process.env.PUBLIC_URL}/callio-icon.png`}
+              alt=""
+              aria-hidden="true"
+            />
             <h1>{feedTitle}</h1>
           </div>
           <div className="home-feed__header-actions">
@@ -208,41 +229,59 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
                 const sizeTier = getPostSizeTier(post.content);
 
                 return (
-                <article key={post.id} className="home-post">
-                  <div className={`home-post__card home-post__card--${sizeTier}`}>
-                    <div className="home-post__top">
-                      <div className="home-post__avatar" aria-hidden="true">
-                        {getInitials(post.username)}
+                  <article key={post.id} className="home-post">
+                    <div
+                      className={`home-post__card home-post__card--${sizeTier}`}
+                    >
+                      <div className="home-post__top">
+                        <div className="home-post__avatar" aria-hidden="true">
+                          {getInitials(post.username)}
+                        </div>
+                        <div className="home-post__meta">
+                          <span className="home-post__username">
+                            @{post.username}
+                          </span>
+                          <span className="home-post__dot">·</span>
+                          {isRelativeTimestamp(post.timestamp) ? (
+                            <>
+                              <time
+                                className="home-post__time"
+                                dateTime={post.createdAt}
+                              >
+                                {post.timestamp}
+                              </time>
+                              <span className="home-post__dot">·</span>
+                            </>
+                          ) : null}
+                          <time
+                            className="home-post__timestamp"
+                            dateTime={post.createdAt}
+                          >
+                            {post.createdAtLabel}
+                          </time>
+                        </div>
+                        <span className="home-post__topic">
+                          {getTopicLabel(post.topicId)}
+                        </span>
                       </div>
-                      <div className="home-post__meta">
-                        <span className="home-post__username">@{post.username}</span>
-                        <span className="home-post__dot">·</span>
-                        <time className="home-post__time" dateTime={post.createdAt}>
-                          {post.timestamp}
-                        </time>
-                        <span className="home-post__dot">·</span>
-                        <time className="home-post__timestamp" dateTime={post.createdAt}>
-                          {post.createdAtLabel}
-                        </time>
-                      </div>
-                      <span className="home-post__topic">{getTopicLabel(post.topicId)}</span>
-                    </div>
 
-                    <div className="home-post__body">
-                      <p className={`home-post__content home-post__content--${sizeTier}`}>
-                        {post.content}
-                      </p>
+                      <div className="home-post__body">
+                        <p
+                          className={`home-post__content home-post__content--${sizeTier}`}
+                        >
+                          {post.content}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
                 );
               })
             ) : (
               <div className="home-feed__empty">
                 <p>
                   {activeTopicId
-                    ? 'No posts in this topic yet.'
-                    : 'No posts yet. Be the first to share something.'}
+                    ? "No posts in this topic yet."
+                    : "No posts yet. Be the first to share something."}
                 </p>
               </div>
             )}
@@ -253,7 +292,9 @@ export default function ForumHome({ userId, username, onSignOut }: ForumHomeProp
             className="home-feed__nav home-feed__nav--next"
             onClick={() => goToPost(activePostIndex + 1)}
             disabled={
-              activePostIndex >= posts.length - 1 || posts.length === 0 || isLoading
+              activePostIndex >= posts.length - 1 ||
+              posts.length === 0 ||
+              isLoading
             }
             aria-label="Next post"
           >

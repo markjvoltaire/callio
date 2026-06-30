@@ -55,6 +55,10 @@ export function formatRelativeTime(isoDate: string): string {
   });
 }
 
+export function isRelativeTimestamp(timestamp: string): boolean {
+  return timestamp === 'just now' || timestamp.endsWith(' ago');
+}
+
 export function formatAbsoluteTime(isoDate: string): string {
   return new Date(isoDate).toLocaleString(undefined, {
     month: 'short',

@@ -23,14 +23,6 @@ export default function HeaderClouds() {
 
         <rect width="1200" height="120" fill="url(#header-sky)" />
 
-        <g filter="url(#cloud-shadow-soft)" opacity="0.92">
-          <path
-            fill="#ffffff"
-            d="M118,78c-18,0-34-8-44-21c-3,1-6,1-9,1c-14,0-25-11-25-25c0-1,0-2,0.2-3C22,24,8,38,8,55c0,22,18,40,40,40h70c22,0,40-18,40-40c0-19-13-35-31-39C124,11,112,0,98,0c-5,0-10,1-14,3C79,1,73,0,67,0C50,0,35,9,28,23C24,22,20,22,16,22C7,22,0,29,0,38c0,7,5,13,11,16C4,58,0,66,0,74c0,14,11,25,25,25h93c14,0,25-11,25-25c0-12-8-22-19-24C122,44,120,61,118,78z"
-            transform="translate(40, 18) scale(0.55)"
-          />
-        </g>
-
         <g filter="url(#cloud-shadow)" opacity="0.98">
           <path
             fill="#ffffff"
