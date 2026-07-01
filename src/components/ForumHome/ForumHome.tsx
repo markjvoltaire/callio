@@ -166,12 +166,6 @@ export default function ForumHome({
         <header className="home-feed__header">
           <HeaderClouds />
           <div className="home-feed__title">
-            <img
-              className="home-feed__title-icon"
-              src={`${process.env.PUBLIC_URL}/callio-icon.png`}
-              alt=""
-              aria-hidden="true"
-            />
             <h1>{feedTitle}</h1>
           </div>
           <div className="home-feed__header-actions">

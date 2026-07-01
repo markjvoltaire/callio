@@ -82,14 +82,14 @@
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.25rem 1.35rem;
-  min-height: 5.5rem;
+  min-height: 6.5rem;
   overflow: hidden;
   border-bottom: 1px solid var(--feed-border);
-  background: #ffd4bc;
+  background: #8ec5ef;
 }
 
 .home-feed__clouds {
@@ -116,21 +116,16 @@
   gap: 0.65rem;
 }
 
-.home-feed__title-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center top;
-  flex-shrink: 0;
-  background: #ffe6d6;
-  box-shadow: 0 1px 6px rgba(232, 168, 138, 0.45);
+.home-feed__header-icon {
+  filter: drop-shadow(0 2px 6px rgba(90, 159, 212, 0.35));
 }
 
 .home-feed__header h1 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: "Bickham Script Pro", "Outfit", cursive;
+  font-size: clamp(3.25rem, 6vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1;
   color: var(--feed-text);
   text-shadow: 0 1px 8px rgba(255, 255, 255, 0.85);
 }
