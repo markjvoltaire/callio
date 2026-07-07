@@ -3,7 +3,7 @@ export default function HeaderClouds() {
     <div className="home-feed__clouds" aria-hidden="true">
       <img
         className="home-feed__clouds-photo"
-        src={`${process.env.PUBLIC_URL}/header-clouds.jpg`}
+        src={`${process.env.PUBLIC_URL}/header-clouds.png`}
         alt=""
       />
       <img
