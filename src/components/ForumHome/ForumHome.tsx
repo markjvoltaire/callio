@@ -113,13 +113,6 @@ export default function ForumHome({
   return (
     <div className="home-layout">
       <aside className="home-sidebar" aria-label="Topic categories">
-        <div className="home-sidebar__clouds" aria-hidden="true">
-          <img
-            className="home-sidebar__clouds-photo"
-            src={`${process.env.PUBLIC_URL}/header-clouds.png`}
-            alt=""
-          />
-        </div>
         <nav className="home-sidebar__nav">
           <button
             type="button"
