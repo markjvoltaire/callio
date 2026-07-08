@@ -168,12 +168,13 @@
 .home-feed__header-icon {
   position: absolute;
   right: 150px;
-  top: -20px;
-  height: 130%;
+  top: 50%;
+  height: 88%;
   width: auto;
-  max-width: min(55%, 28rem);
+  max-width: min(42%, 22rem);
   object-fit: contain;
   object-position: bottom right;
+  transform: translateY(-42%);
   filter: drop-shadow(0 2px 6px rgba(90, 159, 212, 0.35));
 }
 
