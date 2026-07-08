@@ -143,7 +143,7 @@ export default function ForumHome({
 
           <button
             type="button"
-            className="home-sidebar__item home-sidebar__item--muted"
+            className="home-sidebar__item"
           >
             <User size={24} weight="regular" />
             <span>Profile</span>
