@@ -152,7 +152,7 @@ export default function ForumHome({
           {onSignOut ? (
             <button
               type="button"
-              className="home-sidebar__item home-sidebar__item--muted"
+              className="home-sidebar__item home-sidebar__item--muted home-sidebar__item--sign-out"
               onClick={onSignOut}
             >
               <SignOut size={24} weight="regular" />

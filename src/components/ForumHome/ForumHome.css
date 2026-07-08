@@ -20,10 +20,26 @@
   flex-shrink: 0;
   overflow: hidden;
   background:
-    radial-gradient(circle at 17% 11%, rgba(229, 85, 118, 0.16) 0 2px, transparent 3px),
-    radial-gradient(circle at 22% 14%, rgba(229, 85, 118, 0.2) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 82% 24%, rgba(229, 85, 118, 0.16) 0 2px, transparent 3px),
-    radial-gradient(circle at 78% 27%, rgba(229, 85, 118, 0.18) 0 1.5px, transparent 2.5px),
+    radial-gradient(
+      circle at 17% 11%,
+      rgba(229, 85, 118, 0.16) 0 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 22% 14%,
+      rgba(229, 85, 118, 0.2) 0 1.5px,
+      transparent 2.5px
+    ),
+    radial-gradient(
+      circle at 82% 24%,
+      rgba(229, 85, 118, 0.16) 0 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 78% 27%,
+      rgba(229, 85, 118, 0.18) 0 1.5px,
+      transparent 2.5px
+    ),
     linear-gradient(155deg, #fff8e6 0%, #edf6fb 44%, #f8e8ee 100%);
   color: #06283d;
   padding: 0.5rem 0.75rem 1.5rem;
@@ -41,8 +57,12 @@
 .home-sidebar__nav {
   position: relative;
   z-index: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.22rem;
+  box-sizing: border-box;
+  height: calc(100dvh - 2rem);
+  padding-top: clamp(3.5rem, 16vh, 7rem);
 }
 
 .home-sidebar__item {
@@ -94,6 +114,10 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: rgba(6, 40, 61, 0.78);
+}
+
+.home-sidebar__item--sign-out {
+  margin-top: auto;
 }
 
 .home-sidebar__divider {
@@ -402,8 +426,11 @@
 
   .home-sidebar__nav {
     display: flex;
+    flex-direction: row;
     gap: 0.35rem;
     overflow-x: auto;
+    height: auto;
+    padding-top: 0;
     padding-bottom: 0.25rem;
   }
 
@@ -416,6 +443,10 @@
 
   .home-sidebar__item span {
     display: inline;
+  }
+
+  .home-sidebar__item--sign-out {
+    margin-top: 0;
   }
 
   .home-feed {
